@@ -1,4 +1,4 @@
-name: Run Script on Push
+name: Generate Artifacts on Push to Branch
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - feature/update_internal_documents
 
 jobs:
-  run-script:
+  generate-artifacts:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +17,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+
+      - name: Set up environment variables
+        run: |
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "REPO_NAME=$(basename -s .git `git config --get remote.origin.url`)" >> $GITHUB_ENV
+          TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))
+          if [ -z "$TAG_NAME" ]; then
+            TAG_NAME="no-tag"
+          fi
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: List internal docs directory
         run: |
@@ -34,5 +45,5 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: external-docs
+          name: ${REPO_NAME}-${TAG_NAME}-${COMMIT_HASH}-${DATE}
           path: external_docs/
