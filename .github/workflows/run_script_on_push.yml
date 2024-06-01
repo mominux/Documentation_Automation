@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository content
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all tags and branches
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -22,7 +24,7 @@ jobs:
         run: |
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "REPO_NAME=$(basename -s .git `git config --get remote.origin.url`)" >> $GITHUB_ENV
-          TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))
+          TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null)
           if [ -z "$TAG_NAME" ]; then
             TAG_NAME="no-tag"
           fi
