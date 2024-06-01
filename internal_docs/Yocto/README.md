@@ -5,13 +5,13 @@ This document provides instructions on how to integrate Yocto for embedded Linux
 
 ## Public Information
 
-The Yocto Project is an open-source collaboration project that provides templates, tools, and methods to help you create custom Linux-based systems for embedded products regardless of the hardware architecture.
+The Yocto Project is an open-source collaboration project that provides templates, tools, and methods to help you create custom Linux-based systems for embedded products regardless of the hardware architecture..
 
 ### Installation Steps
 
 1. Download the Yocto Project source code.
 2. Configure the build environment.
-3. Compile and install Yocto.
+3. Compile and install Yocto..
 
 ## Configuration
 

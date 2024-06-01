@@ -5,13 +5,13 @@ This document provides instructions on how to integrate Buildroot for embedded L
 
 ## Public Information
 
-Buildroot is a simple, efficient, and easy-to-use tool to generate embedded Linux systems through cross-compilation.
+Buildroot is a simple, efficient, and easy-to-use tool to generate embedded Linux systems through cross-compilation..
 
 ### Installation Steps
 
 1. Download the Buildroot source code.
 2. Configure the build environment.
-3. Compile and install Buildroot.
+3. Compile and install Buildroot..
 
 ## Configuration
 
