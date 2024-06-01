@@ -30,7 +30,6 @@ class DocumentProcessor:
         except git.exc.GitCommandError as e:
             logger.error(f"{RED}Error fetching Repo's tag: {e}{RESET}")
             return "latest"
-            
     
     def remove_internal_sections(self, content):
         '''Remove sections marked with <!-- start-internal --> and <!-- end-internal -->'''
@@ -75,11 +74,9 @@ class DocumentProcessor:
 
 if __name__ == "__main__":
     # Paths based on your provided directory structure
-    internal_directory = '../internal_docs/'
-    external_directory = '../external_docs/'
+    internal_directory = 'internal_docs/'
+    external_directory = 'external_docs/'
     acceptable_extensions = ['.md', '.txt', '.rst']
 
     processor = DocumentProcessor(internal_directory, external_directory, acceptable_extensions)
     processor.process_directory()
-    
-    

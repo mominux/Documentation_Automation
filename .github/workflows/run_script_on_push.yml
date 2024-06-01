@@ -18,6 +18,10 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: List internal docs directory
+        run: |
+          ls -R internal_docs/
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
