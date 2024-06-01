@@ -1,7 +1,7 @@
 # Sample Document
 # Yocto Integration Guide
 
-This document provides instructions on how to integrate Yocto for embedded Linux development.
+This document provides instructions on how to integrate Yocto for embedded Linux development..
 
 ## Public Information
 
