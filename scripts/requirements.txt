@@ -1,0 +1,10 @@
+import rs
+import os
+import git
+
+
+
+if __name__ == "__main__":
+
+    main()
+    

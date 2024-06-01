@@ -1,0 +1,52 @@
+name: Generate Artifacts on Push to Branch
+
+on:
+  push:
+    branches:
+      - feature/update_internal_documents
+
+jobs:
+  generate-artifacts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all tags and branches
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Set up environment variables
+        run: |
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "REPO_NAME=$(basename -s .git `git config --get remote.origin.url`)" >> $GITHUB_ENV
+          TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null)
+          if [ -z "$TAG_NAME" ]; then
+            TAG_NAME="no-tag"
+          fi
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "Artifact name: ${REPO_NAME}-${TAG_NAME}-${COMMIT_HASH}-${DATE}"
+
+      - name: List internal docs directory
+        run: |
+          ls -R internal_docs/
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install gitpython
+
+      - name: Run the script
+        run: |
+          python scripts/create_external_document.py
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.REPO_NAME }}-${{ env.TAG_NAME }}-${{ env.COMMIT_HASH }}-${{ env.DATE }}
+          path: external_docs/
