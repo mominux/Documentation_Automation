@@ -25,7 +25,7 @@ jobs:
 
       - name: Run the script
         run: |
-          python scripts/create_external_documents.py
+          python scripts/create_external_document.py
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
