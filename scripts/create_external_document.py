@@ -4,7 +4,7 @@ import git
 import git.exc
 import logging
 
-logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
 # ANSI escape codes for coloring
@@ -24,23 +24,20 @@ class DocumentProcessor:
         '''Fetch the current git tag'''
         try:
             repo = git.Repo(search_parent_directories=True)
-            tag = repo.git.describe('--tags') 
-            logger.info(f"{YELLOW}Recent repo's tag is :{tag} {RESET}")
+            tag = repo.git.describe('--tags', always=True)  # Use '--tags' with 'always' to handle no tags case
+            logger.info(f"{YELLOW}Recent repo's tag is: {tag} {RESET}")
             return tag
-        except git.exc.GitCommandError:
-            logger.error(f"{RED}Error fetching Repo's tag{RESET}")
+        except git.exc.GitCommandError as e:
+            logger.error(f"{RED}Error fetching Repo's tag: {e}{RESET}")
             return "latest"
             
     
-    def remove_internal_sections(self,content):
-        '''Remove sections marked with <!-- start-internal --> and <!-- end-internal -->"'''
-        return re.sub(r'<!-- start-internal -->.*?<!-- end-internal -->',
-                      '',content,flags=re.DOTALL)
-        
-        
+    def remove_internal_sections(self, content):
+        '''Remove sections marked with <!-- start-internal --> and <!-- end-internal -->'''
+        return re.sub(r'<!-- start-internal -->.*?<!-- end-internal -->', '', content, flags=re.DOTALL)
     
-    def process_file(self,internal_file,external_file):
-        '''Process all files in the directory and replicate the structure'''
+    def process_file(self, internal_file, external_file):
+        '''Process a single file to remove internal sections'''
         logger.info(f"{YELLOW}Processing file: {internal_file}{RESET}")
         try:
             with open(internal_file, 'r', encoding='utf-8') as input_file:
@@ -54,8 +51,7 @@ class DocumentProcessor:
         except Exception as e:
             logger.error(f"{RED}Error processing file {internal_file}: {e}{RESET}")
 
-    
-    def process_directory(self,internal_docs_path=None,external_docs_path=None):
+    def process_directory(self, internal_docs_path=None, external_docs_path=None):
         '''Process all files in the directory and replicate the structure'''
         if internal_docs_path is None:
             internal_docs_path = self.internal_docs_path
