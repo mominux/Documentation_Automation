@@ -1,0 +1,30 @@
+name: Run Script on Push
+
+on:
+  push:
+    branches:
+      - feature/update_internal_documents
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # If you have additional dependencies, you can install them here
+          # For example, if you need GitPython:
+          pip install gitpython
+
+      - name: Run the script
+        run: |
+          python scripts/create_external_document.py
