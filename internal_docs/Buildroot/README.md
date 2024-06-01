@@ -1,7 +1,7 @@
 # Sample Document
 # Buildroot Integration Guide
 
-This document provides instructions on how to integrate Buildroot for embedded Linux development.
+This document provides instructions on how to integrate Buildroot for embedded Linux development..
 
 ## Public Information
 
